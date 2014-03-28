@@ -4,12 +4,6 @@ import re
 import networkx as nx
 from Queue import Queue
 
-#start_node = {'url': "http://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm", 'parent': None}
-#end_node = {'url': "http://en.wikipedia.org/wiki/Multi-criteria_decision_analysis", 'parent': None}
-
-start_node = {'url': "http://en.wikipedia.org/wiki/Support_vector_machine", 'parent': None}
-end_node = {'url': "http://en.wikipedia.org/wiki/Miley_Cyrus", 'parent': None}
-
 def geturl(st,agent=None):
 	headers = { 'User-Agent' : agent }
 	req = urllib2.Request(st, None, headers)
@@ -23,7 +17,6 @@ def getbetween2(body,start,end):
 		body, re.DOTALL)
 	return strs
 
-
 def successors(url):
 	page = geturl( url['url'] )
 	page = page[ 0 : page.find('<h2><span class="mw-headline" id="References">References</span>') ]
@@ -35,9 +28,6 @@ def successors(url):
 		'Geographic_coordinate_system' not in elem:
 			clean_links.append( {'url': "http://en.wikipedia.org/wiki" + elem, 'parent': url } )
 	return clean_links
-
-def isGoal(t):
-	return False
 	
 def findParents(elem):
 	arr = []
@@ -47,7 +37,11 @@ def findParents(elem):
 	arr.append( elem['url'] )
 	return arr
 
-def BFS(start_node, end_node):
+def BFS(start_url, end_url, draw_graph=False):
+
+	start_node = {'url': start_url, 'parent': None}
+	end_node = {'url': end_url, 'parent': None}
+
 	Q_a = Queue()
 	V_a = dict()
 	Q_a.put(start_node)
@@ -59,8 +53,7 @@ def BFS(start_node, end_node):
 	V_b[ end_node['url'] ] = end_node
 	
 	while Q_a.empty() == False or Q_b.empty() == False:
-	
-		# left side
+
 		node = Q_a.get()
 		#print url
 		for successor in successors(node):
@@ -68,7 +61,6 @@ def BFS(start_node, end_node):
 				V_a[ successor['url'] ] = successor
 				Q_a.put(successor)
 				
-		#right side
 		node = Q_b.get()
 		#print url
 		for successor in successors(node):
@@ -76,7 +68,7 @@ def BFS(start_node, end_node):
 				V_b[ successor['url'] ] = successor
 				Q_b.put(successor)
 			
-		intersect = list( set( V_a.keys() ).intersection( set( V_b.keys() ) ) )
+		intersect = list( set( V_a.keys() ).intersection( set( V_b.keys() ) ) ) # seems a bit inefficient?
 		if len(intersect) > 0:
 			left = V_a[ intersect[0] ]
 			right = V_b[ intersect[0] ]
@@ -86,4 +78,4 @@ def BFS(start_node, end_node):
 				print p
 			break
 	
-BFS(start_node, end_node)
+BFS("http://en.wikipedia.org/wiki/Support_vector_machine", "http://en.wikipedia.org/wiki/Miley_Cyrus")
