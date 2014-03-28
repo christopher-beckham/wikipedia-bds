@@ -37,6 +37,11 @@ def findParents(elem):
 	arr.append( elem['url'] )
 	return arr
 
+def getRandomArticle():
+	page = geturl("http://en.wikipedia.org/wiki/Special:Random")
+	link = getbetween2(page, '<link rel="canonical" href="', '"')[0]
+	return link
+
 def BFS(start_url, end_url, draw_graph=False):
 
 	start_node = {'url': start_url, 'parent': None}
@@ -74,8 +79,12 @@ def BFS(start_url, end_url, draw_graph=False):
 			right = V_b[ intersect[0] ]
 			for p in findParents(left)[::-1]:
 				print p
+			print
 			for p in findParents(right)[1::]:
 				print p
 			break
 	
-BFS("http://en.wikipedia.org/wiki/Support_vector_machine", "http://en.wikipedia.org/wiki/Miley_Cyrus")
+#BFS("http://en.wikipedia.org/wiki/Support_vector_machine", "http://en.wikipedia.org/wiki/Miley_Cyrus")
+BFS( getRandomArticle(), getRandomArticle() )
+
+#print getRandomArticle()
