@@ -122,20 +122,37 @@ http://en.wikipedia.org/wiki/United_Kingdom
 
 We can also briefly analyze how many nodes are in each graph.
 
-```{r}
-df = read.csv("R/node-hist.txt",header=TRUE)
+
+```r
+df = read.csv("R/node-hist.txt", header = TRUE)
 # print number of entries
-nrow(df)-1
+nrow(df) - 1
 ```
 
-```{r}
+```
+## [1] 151
+```
+
+
+
+```r
 # summary statistics
 summary(df$nodes)
 ```
 
-```{r}
-hist(df$nodes,breaks=4)
 ```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     4.0     6.0     6.0     5.8     6.0     7.0
+```
+
+
+
+```r
+hist(df$nodes, breaks = 4)
+```
+
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
+
 
 So a large majority of these graphs comprise of only 5-6 nodes, probably due to our central nodes being articles like the **United States** or **World War II**.
 
