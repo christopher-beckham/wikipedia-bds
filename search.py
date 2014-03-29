@@ -83,8 +83,12 @@ def BFS(start_url, end_url, draw_graph=False):
 			for p in findParents(right)[1::]:
 				print p
 			break
-	
-#BFS("http://en.wikipedia.org/wiki/Support_vector_machine", "http://en.wikipedia.org/wiki/Miley_Cyrus")
-BFS( getRandomArticle(), getRandomArticle() )
+
+PREFIX = "http://en.wikipedia.org/wiki/"
+
+if len(sys.argv) == 3:
+	BFS( PREFIX+sys.argv[1], PREFIX+sys.argv[2] )
+else:
+	BFS( getRandomArticle(), getRandomArticle() )
 
 #print getRandomArticle()
